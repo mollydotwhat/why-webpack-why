@@ -52,12 +52,9 @@ registerRoute(({ request }) => request.mode === 'navigate', pageCache);
   https://developer.chrome.com/docs/workbox/caching-strategies-overview/#stale-while-revalidate
 
   In the code below, we only want to register a route if the requested 
-  destination contains "style", "script", or "worker". So, first, create an 
-  array with these three strings.
+  destination contains "style", "script", or "worker". So, first, create an array with these three strings.
 
-  Something like:
-     const paths = []   // complete the array
-
+  
   We also need to be able to reference whatever destination is being sought. This 
   is part of the {request} object being injected below. So we would get that value 
   from  request.destination
@@ -70,9 +67,10 @@ registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
   If you supply the correct values below, this file is complete.
 */
+const paths = ["style", "script", "worker"]
 
-registerRoute( ({ request }) => variableForArrayHere.ARRAY_METHOD_HERE(variableForDestinationHere),
-  new CLASSNAME_TO_INSTANTIATE_HERE({
+registerRoute( ({ request }) => paths.include(request.destination),
+  new StaleWhileRevalidate({
     cacheName: 'asset-cache',
     plugins: [
       new CacheableResponsePlugin({
